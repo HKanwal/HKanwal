@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="author" content="Harkeerat Kanwal">
+
+		<% include partials/import_bootstrapcss %>
+		<% include partials/import_fa %>
+		<link rel="stylesheet" href="/css/all.css">
+	</head>
+
+	<body>
+		<%- include("partials/navbar", { active: "Tools" }) %>
+
+		<div class="container">
+			<div class="container-fluid page-header">
+				<h2>Tools</h2>
+			</div>
+			<div class="container-fluid">
+				<p class="larger-text">
+					A collection of tools and scripts I have developed thus far.
+				</p>
+			</div>
+		</div>
+
+		<% include partials/footer %>
+
+		<% include partials/import_jquery %>
+    	<% include partials/import_bootstrapjs %>
+	</body>
+</html>

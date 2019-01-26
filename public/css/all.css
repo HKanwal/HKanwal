@@ -1,0 +1,4 @@
+/* To be linked to in every EJS file, used by footer */
+.larger-text {
+	font-size: 110%;
+}

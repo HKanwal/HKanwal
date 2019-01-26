@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="author" content="Harkeerat Kanwal">
+
+		<% include partials/import_bootstrapcss %>
+		<% include partials/import_fa %>
+		<link rel="stylesheet" href="/css/all.css">
+	</head>
+
+	<body>
+		<%- include("partials/navbar", { active: "Home" }) %>
+
+		<div class="container">
+			<div class="container-fluid page-header">
+				<h2>About Me</h2>
+			</div>
+			<div class="container-fluid">
+				<p class="larger-text">
+					I am an aspiring software developer/programmer who is currently in McMaster University's Engineering 1 (Co-op) program and will be progressing into Sofware Engineering starting year 2. I have a passion for writing code and have been addicted to it since I first learned JavaScript in high school.
+				</p>
+			</div>
+			<div class="container-fluid" style="margin-top:15px;">
+				<h4>Languages have high proficiency in</h4>
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+									Python
+								</a>
+							</h4>
+						</div>
+						<div id="collapse1" class="panel-collapse collapse">
+							<ul class="list-group">
+								<li class="list-group-item">Jupyter Notebook</li>
+								<li class="list-group-item">Jupyter Hub</li>
+								<li class="list-group-item">Tensor Flow</li>
+								<li class="list-group-item">Numpy</li>
+								<li class="list-group-item">Matplotlib</li>
+								<li class="list-group-item">Django</li>
+							</ul>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+									JavaScript
+								</a>
+							</h4>
+						</div>
+						<div id="collapse2" class="panel-collapse collapse">
+							<ul class="list-group">
+								<li class="list-group-item">jQuery</li>
+								<li class="list-group-item">AngularJS</li>
+								<li class="list-group-item">NodeJS</li>
+								<li class="list-group-item">ExpressJS</li>
+								<li class="list-group-item">TamperMonkey</li>
+								<li class="list-group-item">Electron</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid" style="margin-top:10px;">
+				<h4>Languages I have limited proficiency in</h4>
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								Java
+							</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid" style="margin-top:10px;">
+				<p class="larger-text">
+					I am currently searching for co-op or intership positions in Canada.
+				</p>
+			</div>
+			<div class="container-fluid page-header">
+				<h2>About This Website</h2>
+			</div>
+			<div class="container-fluid">
+				<p class="larger-text">
+					I am currently using this domain to serve as my digital portfolio. It is meant to showcase the various apps and tools I have created thus far, and my general ability to code.
+				</p>
+				<p class="larger-text">
+					This site was created using a MEAN stack (MongoDB for databasing, ExpressJS serves as the middle-ware, AngularJS is used at the front-end and NodeJS is used as the back-end). The templating engine being used by Express is EJS. Also, Git is used for version control. I created this site from the ground up to display my competency in these technologies and the full project and all project files can be found on GitHub.
+				</p>
+				<p class="larger-text">
+					Additional libraries used:
+					<ul class="larger-text">
+						<li>Bootstrap</li>
+						<li>jQuery</li>
+					</ul>
+				</p>
+			</div>
+		</div>
+
+		<% include partials/footer %>
+
+		<% include partials/import_jquery %>
+    	<% include partials/import_bootstrapjs %>
+	</body>
+</html>
