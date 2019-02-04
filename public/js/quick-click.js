@@ -19,7 +19,7 @@ $(document).ready(function() {
 	// Settings for targets
 	var spawn_delay = 800;
 	var shrink_speed = 2;
-	var targets = 20;
+	var targets = 5;
 	var targets_spawned = 0;
 
 	// Trail settings
@@ -32,7 +32,6 @@ $(document).ready(function() {
 
 	// Score tracking
 	var score = 0;
-	var missed = 0;
 
 	// Create PIXI app and create canvas
 	var app = new PIXI.Application({
@@ -161,7 +160,6 @@ $(document).ready(function() {
 				// Remove clutter after target disappears
 				app.stage.removeChild(target);
 				app.ticker.remove(animate);
-				missed += 1;
 
 				if(target.index === targets) {
 					setTimeout(createEndScreen, 1000);
@@ -189,29 +187,102 @@ $(document).ready(function() {
 		}
 	}
 
-	//Create score/ending screen
-	function createEndScreen() {
-		var play_button = new PIXI.Container();
+	// Creates interactive button, with hover animation and onclick callback
+	function createButton(text, posX, posY, font_size, onclick) {
+		// Draw button while not moused over
+		var button = new PIXI.Container();
 
-		var play_body = new PIXI.Graphics();
-		play_body.beginFill(color_palette.blue);
-		play_body.drawRect(0, 0, width/3, height/6);
-		play_body.endFill();
+			// Add button body
+		var button_body = new PIXI.Graphics();
+		button_body.beginFill(color_palette.blue);
+		button_body.drawRect(0, 0, width/3, height/6);
+		button_body.endFill();
 
-		play_body.pivot.set(play_body.width/2, play_body.height/2);
-		play_body.position.set(width/2, height-height/3);
+		button_body.pivot.set(button_body.width/2, button_body.height/2);
+		button_body.position.set(posX, posY);
 
-		var play_text = new PIXI.Text("Play Again", {
+			// Add button text
+		var button_text = new PIXI.Text(text, {
 			fontFamily: "Technoma",
-			fontSize: 52,
+			fontSize: font_size,
 			fill: color_palette.dark_blue
 		});
-		play_text.pivot.set(play_text.width/2, play_text.height/2);
-		play_text.position.set(width/2, height-height/3);
 
-		play_button.addChild(play_body);
-		play_button.addChild(play_text);
-		app.stage.addChild(play_button);
+		button_text.pivot.set(button_text.width/2, button_text.height/2);
+		button_text.position.set(posX, posY);
+
+		button.addChild(button_body);
+		button.addChild(button_text);
+		app.stage.addChild(button);
+
+
+		// Draw button while moused over
+		var button_active = new PIXI.Container();
+
+			// Add button body
+		var button_active_body = new PIXI.Graphics();
+		button_active_body.beginFill(color_palette.orange);
+		button_active_body.drawRect(0, 0, width/3, height/6);
+		button_active_body.endFill();
+
+		button_active_body.pivot.set(button_active_body.width/2, button_active_body.height/2);
+		button_active_body.position.set(posX, posY);
+
+			// Add button text
+		var button_active_text = new PIXI.Text(text, {
+			fontFamily: "Technoma",
+			fontSize: font_size,
+			fill: color_palette.dark_orange
+		});
+
+		button_active_text.pivot.set(button_active_text.width/2, button_active_text.height/2);
+		button_active_text.position.set(posX, posY);
+
+		button_active.addChild(button_active_body);
+		button_active.addChild(button_active_text);
+		button_active.alpha = 0;
+
+		app.stage.addChild(button_active);
+
+		// Apply mouseover effects
+		button.interactive = true;
+		button.on("mouseover", function(e) {
+			button.alpha = 0;
+			button_active.alpha = 1;
+		});
+		button.on("mouseout", function(e) {
+			button_active.alpha = 0;
+			button.alpha = 1;
+		});
+
+		// Run onclick callback
+		button.on("pointerdown", function(e) {
+			onclick(button, button_active);
+		});
+	}
+
+	//Create score/ending screen
+	function createEndScreen() {
+		var score_text = new PIXI.Text("Score: " + score.toString() + " out of " + targets.toString(), {
+			fontFamily: "Technoma",
+			fontSize: 64,
+			fill: "white"
+		});
+		score_text.pivot.set(score_text.width/2, score_text.height/2);
+		score_text.position.set(width/2, height/3);
+
+		app.stage.addChild(score_text);
+
+		createButton("Play Again", width/2, height-height/3, 52, function(button, button_active) {
+			score = 0;
+			targets_spawned = 0;
+
+			app.stage.removeChild(button);
+			app.stage.removeChild(button_active);
+			app.stage.removeChild(score_text);
+
+			setTimeout(createTarget, 1000);
+		});
 	}
 
 	// Create/render title screen
@@ -226,64 +297,9 @@ $(document).ready(function() {
 
 		app.stage.addChild(title);
 
-		var play_button = new PIXI.Container();
-
-		var play_body = new PIXI.Graphics();
-		play_body.beginFill(color_palette.blue);
-		play_body.drawRect(0, 0, width/3, height/6);
-		play_body.endFill();
-
-		play_body.pivot.set(play_body.width/2, play_body.height/2);
-		play_body.position.set(width/2, height-height/3);
-
-		var play_text = new PIXI.Text("Play", {
-			fontFamily: "Technoma",
-			fontSize: 64,
-			fill: color_palette.dark_blue
-		});
-		play_text.pivot.set(play_text.width/2, play_text.height/2);
-		play_text.position.set(width/2, height-height/3);
-
-		play_button.addChild(play_body);
-		play_button.addChild(play_text);
-		app.stage.addChild(play_button);
-
-		var play_button_active = new PIXI.Container();
-
-		var play_body_active = new PIXI.Graphics();
-		play_body_active.beginFill(color_palette.orange);
-		play_body_active.drawRect(0, 0, width/3, height/6);
-		play_body_active.endFill();
-
-		play_body_active.pivot.set(play_body_active.width/2, play_body_active.height/2);
-		play_body_active.position.set(width/2, height-height/3);
-
-		var play_text_active = new PIXI.Text("Play", {
-			fontFamily: "Technoma",
-			fontSize: 64,
-			fill: color_palette.dark_orange
-		});
-		play_text_active.pivot.set(play_text_active.width/2, play_text_active.height/2);
-		play_text_active.position.set(width/2, height-height/3);
-
-		play_button_active.addChild(play_body_active);
-		play_button_active.addChild(play_text_active);
-		play_button_active.alpha = 0;
-
-		app.stage.addChild(play_button_active);
-
-		play_button.interactive = true;
-		play_button.on("mouseover", function(e) {
-			play_button.alpha = 0;
-			play_button_active.alpha = 1;
-		});
-		play_button.on("mouseout", function(e) {
-			play_button_active.alpha = 0;
-			play_button.alpha = 1;
-		});
-		play_button.on("pointerdown", function(e) {
-			app.stage.removeChild(play_button);
-			app.stage.removeChild(play_button_active);
+		createButton("Play", width/2, height-height/3, 64, function(button, button_active) {
+			app.stage.removeChild(button);
+			app.stage.removeChild(button_active);
 			app.stage.removeChild(title);
 
 			setTimeout(createTarget, 1000);
