@@ -5,6 +5,7 @@ var UserModel = require('../models/User');
 /* POST sign up info. */
 router.post('/', function(req, res, next) {
 	var username = req.body.username;
+	// TODO: hash pwd
 	var password = req.body.password;
 	var email = req.body.email;
 

@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 // TODO: Add restrictions to username and pwd
+// TODO: Prevent injection, nothing can start w/ $
 var userSchema = new Schema({
 	username: {type: String, required: true},
 	password: {type: String, required: true},
