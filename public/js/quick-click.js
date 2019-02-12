@@ -310,6 +310,7 @@ $(document).ready(function() {
 	waitForWebfonts(["Technoma"], createTitleScreen);
 });
 
+// Waits for web fonts by checking change in text width
 function waitForWebfonts(fonts, callback) {
 	var loadedFonts = 0;
     for(var i = 0, l = fonts.length; i < l; ++i) {
