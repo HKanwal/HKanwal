@@ -11,6 +11,8 @@
 	</head>
 
 	<body>
+		<% include partials/log_in %>
+		<% include partials/sign_up %>
 		<%- include("partials/navbar", { active: "Games" }) %>
 
 		<div class="container">
@@ -39,5 +41,6 @@
 
 		<% include partials/import_jquery %>
     	<% include partials/import_bootstrapjs %>
+    	<% include partials/import_form_validator %>
 	</body>
 </html>
