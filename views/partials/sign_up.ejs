@@ -6,18 +6,18 @@
 				<h4>Register</h4>
 			</div>
 			<div class="modal-body">
-				<form action="/signup" method="post" data-toggle="validator" role="form">
+				<form id="signup-form" action="/signup" method="post" data-toggle="validator" role="form">
 					<div class="form-group">
-						<label for="username">User Name:</label>
-						<input type="text" class="form-control" id="username_box" placeholder="Enter Username" name="username" required>
+						<label for="signup_username">User Name:</label>
+						<input type="text" class="form-control" id="username_signup_box" placeholder="Enter Username" name="signup_username" required>
 					</div>
 					<div class="form-group">
 						<label for="email">Email:</label>
 						<input type="email" class="form-control" id="email_box" placeholder="Enter Email" name="email" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" required>
 					</div>
 					<div class="form-group">
-						<label for="password">Password:</label>
-						<input type="password" class="form-control" id="password_box" placeholder="Enter Password" name="password" required>
+						<label for="signup_password">Password:</label>
+						<input type="password" class="form-control" id="password_signup_box" placeholder="Enter Password" name="signup_password" required>
 					</div>
 					<button type="submit" class="btn btn-primary">Register</button>
 				</form>
@@ -28,3 +28,19 @@
 		</div>
 	</div>
 </div>
+
+<script>
+$("#signup-form").submit(function() {
+	$.post($(this).attr("action"), $(this).serialize(), function(res) {
+		// TODO: Make this prettier
+		if(res === "DB search error" || res === "DB save error") {
+			alert("DB connection error. Please try again later.");
+		} else if(res === "Name already in use" || res === "Email already in use") {
+			alert(res);
+		} else {
+			location.reload();
+		}
+	});
+	return false;
+});
+</script>

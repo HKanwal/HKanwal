@@ -3,17 +3,24 @@ var router = express.Router();
 var UserModel = require("../models/User");
 
 router.get("/", function(req, res, next) {
-	var username = req.query.username;
-	var password = req.query.password;
-	
+	var username = req.query.login_username;
+	var password = req.query.login_password;
+
+	/*
+		Sends response according to DB search:
+		"Incorrect password"
+		"User not found"
+		"DB search error"
+		"Success"
+	*/
 	UserModel.find({"username": username}, function(err, users) {
 		if(err) {
-			res.render("error", {message: "db search error", error: err});
+			res.send("DB search error");
 		} else {
 			if(users.length > 0) {
 				if(users[0].password === password) {
 					res.cookie("user", username);
-					res.redirect("/");
+					res.send("Success");
 				} else {
 					// TODO: handle this better
 					res.send("Incorrect password");

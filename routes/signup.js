@@ -1,20 +1,31 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var UserModel = require('../models/User');
+var UserModel = require("../models/User");
 
 /* POST sign up info. */
-router.post('/', function(req, res, next) {
-	var username = req.body.username;
+router.post("/", function(req, res, next) {
+	var username = req.body.signup_username;
 	// TODO: hash pwd
-	var password = req.body.password;
+	var password = req.body.signup_password;
 	var email = req.body.email;
-
-	// TODO: Do somthing when username or email alrdy in db
+	
+	/*
+		Sends response according to what is in DB:
+		"Name already in use"
+		"Email already in use"
+		"DB search error"
+		"DB save error"
+		"Success"
+	*/
 	UserModel.find({"$or": [{"username": username}, {"email": email}]}, function(err, users) {
 		if(users.length > 0) {
-			res.send("Name or email already in use");
+			if(users[0].username === username) {
+				res.send("Name already in use");
+			} else if(users[0].email === email) {
+				res.send("Email already in use");
+			}
 		} else if(err) {
-			res.render('error', {message: "db search error", error: err});
+			res.send("DB search error");
 		} else {
 			var user = new UserModel({
 				username: username,
@@ -24,14 +35,10 @@ router.post('/', function(req, res, next) {
 
 			user.save(function(err) {
 				if(err) {
-					// TODO: create and redirect to error page
-					console.log(err);
-					res.render('error', {message: "Error with form or unable to connect to db", error: err});
+					res.send("DB save error");
 				} else {
 					res.cookie("user", username);
-
-					// redirect to success page
-					res.redirect('/');
+					res.send("Success");
 				}
 			});
 		}

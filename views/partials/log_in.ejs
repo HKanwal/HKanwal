@@ -6,14 +6,14 @@
 				<h4>Log In</h4>
 			</div>
 			<div class="modal-body">
-				<form action="/login" method="get">
+				<form id="login-form" action="/login" method="get" data-toggle="validator" role="form">
 					<div class="form-group">
-						<label for="username">User Name:</label>
-						<input type="text" class="form-control" id="username_box" placeholder="Enter Username" name="username">
+						<label for="login_username">User Name:</label>
+						<input type="text" class="form-control" id="username_login_box" placeholder="Enter Username" name="login_username" required>
 					</div>
 					<div class="form-group">
-						<label for="password">Password:</label>
-						<input type="password" class="form-control" id="password_box" placeholder="Enter Password" name="password">
+						<label for="login_password">Password:</label>
+						<input type="password" class="form-control" id="password__login_box" placeholder="Enter Password" name="login_password" required>
 					</div>
 					<button type="submit" class="btn btn-primary">Log In</button>
 				</form>
@@ -24,3 +24,19 @@
 		</div>
 	</div>
 </div>
+
+<script>
+$("#login-form").submit(function() {
+	$.get($(this).attr("action"), $(this).serialize(), function(res) {
+		// TODO: Make this prettier
+		if(res === "DB search error") {
+			alert("DB connection error. Please try again later.");
+		} else if(res === "Incorect password" || res === "User not found") {
+			alert(res);
+		} else {
+			location.reload();
+		}
+	});
+	return false;
+});
+</script>
