@@ -28,6 +28,8 @@ router.post('/', function(req, res, next) {
 					console.log(err);
 					res.render('error', {message: "Error with form or unable to connect to db", error: err});
 				} else {
+					res.cookie("user", username);
+
 					// redirect to success page
 					res.redirect('/');
 				}

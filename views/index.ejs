@@ -13,7 +13,7 @@
 	<body>
 		<% include partials/log_in %>
 		<% include partials/sign_up %>
-		<%- include("partials/navbar", { active: "Home" }) %>
+		<%- include("partials/navbar", { active: "Home", cookies: cookies }) %>
 
 		<div class="container">
 			<div class="container-fluid page-header">
