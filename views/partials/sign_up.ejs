@@ -31,6 +31,7 @@
 
 <script>
 $("#signup-form").submit(function() {
+	// Sent data keys are form field names
 	$.post($(this).attr("action"), $(this).serialize(), function(res) {
 		// TODO: Make this prettier
 		if(res === "DB search error" || res === "DB save error") {
@@ -41,6 +42,7 @@ $("#signup-form").submit(function() {
 			location.reload();
 		}
 	});
+	// prevent redirect on submit
 	return false;
 });
 </script>
