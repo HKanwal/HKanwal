@@ -22,11 +22,9 @@ router.get("/", function(req, res, next) {
 					res.cookie("user", username);
 					res.send("Success");
 				} else {
-					// TODO: handle this better
 					res.send("Incorrect password");
 				}
 			} else {
-				// TODO: handle this better
 				res.send("User not found");
 			}
 		}
