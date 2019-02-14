@@ -6,18 +6,21 @@
 				<h4>Register</h4>
 			</div>
 			<div class="modal-body">
-				<form id="signup-form" action="/signup" method="post" data-toggle="validator" role="form">
+				<form id="signup-form" action="/signup" method="post">
 					<div class="form-group">
-						<label for="signup_username">User Name:</label>
-						<input type="text" class="form-control" id="username_signup_box" placeholder="Enter Username" name="signup_username" pattern="^[^$][a-zA-Z0-9_\-\.]+$" required>
+						<label for="username_signup_box">User Name:</label>
+						<input type="text" class="form-control" id="username_signup_box" placeholder="Enter Username" name="signup_username">
+						<span class="form-alert" id="username_signup_alert"></span>
 					</div>
 					<div class="form-group">
-						<label for="email">Email:</label>
-						<input type="email" class="form-control" id="email_box" placeholder="Enter Email" name="email" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" required>
+						<label for="email_box">Email:</label>
+						<input type="text" class="form-control" id="email_box" placeholder="Enter Email" name="email">
+						<span class="form-alert" id="email_alert"></span>
 					</div>
 					<div class="form-group">
-						<label for="signup_password">Password:</label>
-						<input type="password" class="form-control" id="password_signup_box" placeholder="Enter Password" name="signup_password" pattern="^[^$][a-zA-Z0-9_\-\.]+$" required>
+						<label for="password_signup_box">Password:</label>
+						<input type="password" class="form-control" id="password_signup_box" placeholder="Enter Password" name="signup_password">
+						<span class="form-alert" id="password_signup_alert"></span>
 					</div>
 					<button type="submit" class="btn btn-primary">Register</button>
 				</form>
@@ -30,19 +33,61 @@
 </div>
 
 <script>
+// form submission
 $("#signup-form").submit(function() {
-	// Sent data keys are form field names
-	$.post($(this).attr("action"), $(this).serialize(), function(res) {
-		// TODO: Make this prettier
-		if(res === "DB search error" || res === "DB save error") {
-			alert("DB connection error. Please try again later.");
-		} else if(res === "Name already in use" || res === "Email already in use") {
-			alert(res);
-		} else {
-			location.reload();
-		}
-	});
+	var valid = true;
+
+	if($("#username_signup_box").val() === "") {
+		$("#username_signup_alert").text("Please enter a username.").show();
+		$("#username_signup_box").parent().addClass("has-error");
+		valid = false;
+	}
+	if($("#email_box").val() === "") {
+		$("#email_alert").text("Please enter an email.").show();
+		$("#email_box").parent().addClass("has-error");
+		valid = false;
+	}
+	if($("#password_signup_box").val() === "") {
+		$("#password_signup_alert").text("Please enter a password.").show();
+		$("#password_signup_box").parent().addClass("has-error");
+		valid = false;
+	}
+
+	if(valid) {
+		// Sent data keys are form field names
+		$.post($(this).attr("action"), $(this).serialize(), function(res) {
+			// TODO: Make this prettier
+			if(res === "DB search error" || res === "DB save error") {
+				alert("DB connection error. Please try again later.");
+			} else if(res === "Name already in use" || res === "Email already in use") {
+				alert(res);
+			} else {
+				location.reload();
+			}
+		});
+	}
+
 	// prevent redirect on submit
 	return false;
 });
+
+// form validation
+function validator() {
+	var value = $(this).val();
+
+	if(value === "") {
+		$(this).parent().addClass("has-error");
+	} else {
+		$(this).parent().removeClass("has-error");
+	}
+}
+
+function resetErrors() {
+	$(this).siblings("span").hide();
+}
+
+$("#username_signup_box").focus(resetErrors).focusout(validator);
+$("#email_box").focus(resetErrors).focusout(validator);
+$("#password_signup_box").focus(resetErrors).focusout(validator);
+
 </script>

@@ -6,14 +6,16 @@
 				<h4>Log In</h4>
 			</div>
 			<div class="modal-body">
-				<form id="login-form" action="/login" method="get" data-toggle="validator" role="form">
+				<form id="login-form" action="/login" method="get">
 					<div class="form-group">
-						<label for="login_username">User Name:</label>
-						<input type="text" class="form-control" id="username_login_box" placeholder="Enter Username" name="login_username" pattern="^[^$][a-zA-Z0-9_\-\.]+$" required>
+						<label for="username_login_box">User Name:</label>
+						<input type="text" class="form-control" id="username_login_box" placeholder="Enter Username" name="login_username">
+						<span class="form-alert" id="username_login_alert"></span>
 					</div>
 					<div class="form-group">
-						<label for="login_password">Password:</label>
-						<input type="password" class="form-control" id="password__login_box" placeholder="Enter Password" name="login_password" pattern="^[^$][a-zA-Z0-9_\-\.]+$" required>
+						<label for="password_login_box">Password:</label>
+						<input type="password" class="form-control" id="password_login_box" placeholder="Enter Password" name="login_password">
+						<span class="form-alert" id="password_login_alert"></span>
 					</div>
 					<button type="submit" class="btn btn-primary">Log In</button>
 				</form>
@@ -26,17 +28,53 @@
 </div>
 
 <script>
+// form submission
 $("#login-form").submit(function() {
-	$.get($(this).attr("action"), $(this).serialize(), function(res) {
-		// TODO: Make this prettier
-		if(res === "DB search error") {
-			alert("DB connection error. Please try again later.");
-		} else if(res === "Incorect password" || res === "User not found") {
-			alert(res);
-		} else {
-			location.reload();
-		}
-	});
+	var valid = true;
+
+	if($("#username_login_box").val() === "") {
+		$("#username_login_alert").text("Please enter a username.").show();
+		$("#username_login_box").parent().addClass("has-error");
+		valid = false;
+	}
+	if($("#password_login_box").val() === "") {
+		$("#password_login_alert").text("Please enter a password.").show();
+		$("#password_login_box").parent().addClass("has-error");
+		valid = false;
+	}
+	
+	if(valid) {
+		$.get($(this).attr("action"), $(this).serialize(), function(res) {
+			// TODO: Make this prettier
+			if(res === "DB search error") {
+				alert("DB connection error. Please try again later.");
+			} else if(res === "Incorect password" || res === "User not found") {
+				alert(res);
+			} else {
+				location.reload();
+			}
+		});
+	}
+
 	return false;
 });
+
+// form validation
+function validator() {
+	var value = $(this).val();
+
+	if(value === "") {
+		$(this).parent().addClass("has-error");
+	} else {
+		$(this).parent().removeClass("has-error");
+	}
+}
+
+function resetErrors() {
+	$(this).siblings("span").hide();
+}
+
+$("#username_login_box").focus(resetErrors).focusout(validator);
+$("#password_login_box").focus(resetErrors).focusout(validator);
+
 </script>
