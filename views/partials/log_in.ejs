@@ -28,53 +28,24 @@
 </div>
 
 <script>
-// form submission
-$("#login-form").submit(function() {
-	var valid = true;
-
-	if($("#username_login_box").val() === "") {
-		$("#username_login_alert").text("Please enter a username.").show();
-		$("#username_login_box").parent().addClass("has-error");
-		valid = false;
-	}
-	if($("#password_login_box").val() === "") {
-		$("#password_login_alert").text("Please enter a password.").show();
-		$("#password_login_box").parent().addClass("has-error");
-		valid = false;
-	}
-	
-	if(valid) {
-		$.get($(this).attr("action"), $(this).serialize(), function(res) {
-			// TODO: Make this prettier
-			if(res === "DB search error") {
-				alert("DB connection error. Please try again later.");
-			} else if(res === "Incorect password" || res === "User not found") {
-				alert(res);
-			} else {
-				location.reload();
-			}
-		});
-	}
-
-	return false;
+var login_form = new FormValidator("#login-form", function() {
+	$.get($("#login-form").attr("action"), $("#login-form").serialize(), function(res) {
+		// TODO: Make this prettier
+		if(res === "DB search error") {
+			alert("DB connection error. Please try again later.");
+		} else if(res === "Incorect password" || res === "User not found") {
+			alert(res);
+		} else {
+			location.reload();
+		}
+	});
 });
 
-// form validation
-function validator() {
-	var value = $(this).val();
+login_form.addElement("#username_login_box", "#username_login_alert", {
+	"required": "Please enter a username"
+});
 
-	if(value === "") {
-		$(this).parent().addClass("has-error");
-	} else {
-		$(this).parent().removeClass("has-error");
-	}
-}
-
-function resetErrors() {
-	$(this).siblings("span").hide();
-}
-
-$("#username_login_box").focus(resetErrors).focusout(validator);
-$("#password_login_box").focus(resetErrors).focusout(validator);
-
+login_form.addElement("#password_login_box", "#password_login_alert", {
+	"required": "Please enter a password"
+});
 </script>

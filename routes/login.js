@@ -5,7 +5,7 @@ var UserModel = require("../models/User");
 router.get("/", function(req, res, next) {
 	var username = req.query.login_username;
 	var password = req.query.login_password;
-
+	console.log(req.query);
 	/*
 		Sends response according to DB search:
 		"Incorrect password"

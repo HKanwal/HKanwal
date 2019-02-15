@@ -33,6 +33,15 @@
 </div>
 
 <script>
+// checks if email valid
+function validEmail(email) {
+	if(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.exec(email)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 // form submission
 $("#signup-form").submit(function() {
 	var valid = true;
@@ -44,6 +53,10 @@ $("#signup-form").submit(function() {
 	}
 	if($("#email_box").val() === "") {
 		$("#email_alert").text("Please enter an email.").show();
+		$("#email_box").parent().addClass("has-error");
+		valid = false;
+	} else if(!validEmail($("#email_box").val())) {
+		$("#email_alert").text("Please enter a valid email address.").show();
 		$("#email_box").parent().addClass("has-error");
 		valid = false;
 	}
@@ -71,11 +84,11 @@ $("#signup-form").submit(function() {
 	return false;
 });
 
-// form validation
+// dynamic form validation
 function validator() {
 	var value = $(this).val();
 
-	if(value === "") {
+	if(value === "" || !validEmail($("#email_box").val())) {
 		$(this).parent().addClass("has-error");
 	} else {
 		$(this).parent().removeClass("has-error");
@@ -89,5 +102,4 @@ function resetErrors() {
 $("#username_signup_box").focus(resetErrors).focusout(validator);
 $("#email_box").focus(resetErrors).focusout(validator);
 $("#password_signup_box").focus(resetErrors).focusout(validator);
-
 </script>
