@@ -1,11 +1,11 @@
 var express = require("express");
 var router = express.Router();
 var UserModel = require("../models/User");
+var bcrypt = require("bcrypt");
 
 /* POST sign up info. */
 router.post("/", function(req, res, next) {
 	var username = req.body.signup_username;
-	// TODO: hash pwd
 	var password = req.body.signup_password;
 	var email = req.body.email;
 	
@@ -16,6 +16,7 @@ router.post("/", function(req, res, next) {
 		"Name and email already in use"
 		"DB search error"
 		"DB save error"
+		"Hashing error"
 		"Success"
 	*/
 	UserModel.find({"$or": [{"username": username}, {"email": email}]}, function(err, users) {
@@ -30,18 +31,24 @@ router.post("/", function(req, res, next) {
 		} else if(err) {
 			res.send("DB search error");
 		} else {
-			var user = new UserModel({
-				username: username,
-				password: password,
-				email: email
-			});
-
-			user.save(function(err) {
+			bcrypt.hash(password, 10, function(err, hash) {
 				if(err) {
-					res.send("DB save error");
+					res.send("Hashing error");
 				} else {
-					res.cookie("user", username);
-					res.send("Success");
+					var user = new UserModel({
+						username: username,
+						password: hash,
+						email: email
+					});
+
+					user.save(function(err) {
+						if(err) {
+							res.send("DB save error");
+						} else {
+							res.cookie("user", username);
+							res.send("Success");
+						}
+					});
 				}
 			});
 		}
