@@ -28,13 +28,13 @@
 </div>
 
 <script>
-var login_form = new FormValidator("#login-form", function() {
+var login_form = new FormValidator("#login-form", function(elements) {
 	$.get($("#login-form").attr("action"), $("#login-form").serialize(), function(res) {
 		// TODO: Make this prettier
 		if(res === "DB search error") {
 			alert("DB connection error. Please try again later.");
 		} else if(res === "Incorect password" || res === "User not found") {
-			alert(res);
+			alert("Incorrect password or user not found.");
 		} else {
 			location.reload();
 		}

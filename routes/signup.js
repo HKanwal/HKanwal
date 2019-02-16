@@ -13,13 +13,16 @@ router.post("/", function(req, res, next) {
 		Sends response according to what is in DB:
 		"Name already in use"
 		"Email already in use"
+		"Name and email already in use"
 		"DB search error"
 		"DB save error"
 		"Success"
 	*/
 	UserModel.find({"$or": [{"username": username}, {"email": email}]}, function(err, users) {
 		if(users.length > 0) {
-			if(users[0].username === username) {
+			if(users[0].username === username && users[0].email === email) {
+				res.send("Name and email already in use");
+			} else if(users[0].username === username) {
 				res.send("Name already in use");
 			} else if(users[0].email === email) {
 				res.send("Email already in use");

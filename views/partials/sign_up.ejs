@@ -33,73 +33,33 @@
 </div>
 
 <script>
-// checks if email valid
-function validEmail(email) {
-	if(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.exec(email)) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-// form submission
-$("#signup-form").submit(function() {
-	var valid = true;
-
-	if($("#username_signup_box").val() === "") {
-		$("#username_signup_alert").text("Please enter a username.").show();
-		$("#username_signup_box").parent().addClass("has-error");
-		valid = false;
-	}
-	if($("#email_box").val() === "") {
-		$("#email_alert").text("Please enter an email.").show();
-		$("#email_box").parent().addClass("has-error");
-		valid = false;
-	} else if(!validEmail($("#email_box").val())) {
-		$("#email_alert").text("Please enter a valid email address.").show();
-		$("#email_box").parent().addClass("has-error");
-		valid = false;
-	}
-	if($("#password_signup_box").val() === "") {
-		$("#password_signup_alert").text("Please enter a password.").show();
-		$("#password_signup_box").parent().addClass("has-error");
-		valid = false;
-	}
-
-	if(valid) {
-		// Sent data keys are form field names
-		$.post($(this).attr("action"), $(this).serialize(), function(res) {
-			// TODO: Make this prettier
-			if(res === "DB search error" || res === "DB save error") {
-				alert("DB connection error. Please try again later.");
-			} else if(res === "Name already in use" || res === "Email already in use") {
-				alert(res);
-			} else {
-				location.reload();
-			}
-		});
-	}
-
-	// prevent redirect on submit
-	return false;
+var signup_form = new FormValidator("#signup-form", function(elements) {
+	$.post($("#signup-form").attr("action"), $("#signup-form").serialize(), function(res) {
+		if(res === "DB search error" || res === "DB save error") {
+			alert("DB connection error. Please try again later.");
+		} else if(res === "Name and email already in use") {
+			elements[0].showError("Name already in use.");
+			elements[1].showError("Email already in use.");
+		} else if(res === "Name already in use") {
+			elements[0].showError("Name already in use.");
+		} else if(res === "Email already in use") {
+			elements[1].showError("Email already in use.");
+		} else {
+			location.reload();
+		}
+	});
 });
 
-// dynamic form validation
-function validator() {
-	var value = $(this).val();
+signup_form.addElement("#username_signup_box", "#username_signup_alert", {
+	"required": "Please enter a username."
+});
 
-	if(value === "" || !validEmail($("#email_box").val())) {
-		$(this).parent().addClass("has-error");
-	} else {
-		$(this).parent().removeClass("has-error");
-	}
-}
+signup_form.addElement("#email_box", "#email_alert", {
+	"required": "Please enter a valid email address.",
+	"email": "Please enter a valid email address"
+});
 
-function resetErrors() {
-	$(this).siblings("span").hide();
-}
-
-$("#username_signup_box").focus(resetErrors).focusout(validator);
-$("#email_box").focus(resetErrors).focusout(validator);
-$("#password_signup_box").focus(resetErrors).focusout(validator);
+signup_form.addElement("#password_signup_box", "#password_signup_alert", {
+	"required": "Please enter a password."
+});
 </script>
