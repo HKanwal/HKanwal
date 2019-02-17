@@ -8,7 +8,8 @@ router.post("/", function(req, res, next) {
 	var username = req.body.signup_username;
 	var password = req.body.signup_password;
 	var email = req.body.email;
-	
+	var session = req.session;
+
 	/*
 		Sends response according to what is in DB:
 		"Name already in use"
@@ -45,7 +46,8 @@ router.post("/", function(req, res, next) {
 						if(err) {
 							res.send("DB save error");
 						} else {
-							res.cookie("user", username);
+							session.username = username;
+							session.email = email;
 							res.send("Success");
 						}
 					});

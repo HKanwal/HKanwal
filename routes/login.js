@@ -6,6 +6,7 @@ var bcrypt = require("bcrypt");
 router.get("/", function(req, res, next) {
 	var username = req.query.login_username;
 	var password = req.query.login_password;
+	var session = req.session;
 	
 	/*
 		Sends response according to DB search:
@@ -21,7 +22,8 @@ router.get("/", function(req, res, next) {
 			if(users.length > 0) {
 				bcrypt.compare(password, users[0].password, function(err, matched) {
 					if(matched) {
-						res.cookie("user", username);
+						session.username = username;
+						session.email = users[0].email;
 						res.send("Success");
 					} else {
 						res.send("Incorrect password");

@@ -11,7 +11,7 @@
 	      		<li class=<% if(active==="Games") {%> <%="active"%> <% }%>><a href="/games">Games</a></li>
 	    	</ul>
 	    	<ul class="nav navbar-nav navbar-right">
-	    		<% if(!cookies.user) { %>
+	    		<% if(!session.username) { %>
 		    		<li>
 		    			<a href="#" data-toggle="modal" data-target="#sign_up_modal">
 		    				<span class="glyphicon glyphicon-user"></span> Sign Up
@@ -25,7 +25,7 @@
 		    	<% } else { %>
 		    		<li class"dropdown">
 		    			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		    				<%= cookies.user %> <span class="caret"></span>
+		    				<%= session.username %> <span class="caret"></span>
 		    				<ul class="dropdown-menu">
 		    					<!--<li><a href="#">Profile</a></li>-->
 		    					<li><a href="/logout">Log Out</a></li>

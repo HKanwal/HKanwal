@@ -33,7 +33,7 @@ var login_form = new FormValidator("#login-form", function(elements) {
 		// TODO: Make this prettier
 		if(res === "DB search error") {
 			alert("DB connection error. Please try again later.");
-		} else if(res === "Incorect password" || res === "User not found") {
+		} else if(res === "Incorrect password" || res === "User not found") {
 			alert("Incorrect password or user not found.");
 		} else {
 			location.reload();

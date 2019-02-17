@@ -4,6 +4,8 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var fs = require("fs");
+var session = require("express-session");
 
 var indexRouter = require("./routes/index");
 var toolsRouter = require("./routes/tools");
@@ -15,12 +17,16 @@ var mongoDB = "mongodb://localhost:27017/hkanwal";
 
 var app = express();
 var db = mongoose.connection;
+var config = JSON.parse(fs.readFileSync("config.json", "utf8"));
 
 // mongoDB connection
 mongoose.connect(mongoDB, {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+// session setup
+app.use(session({secret: config.session_secret}));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

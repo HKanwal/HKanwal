@@ -11,7 +11,7 @@
 	<body>
 		<% include partials/log_in %>
 		<% include partials/sign_up %>
-		<%- include("partials/navbar", { active: "Games", cookies: cookies }) %>
+		<%- include("partials/navbar", { active: "Games", session: session }) %>
 
 		<div class="container">
 			<div class="container-fluid page-header">
