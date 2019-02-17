@@ -26,7 +26,11 @@ mongoose.Promise = global.Promise;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // session setup
-app.use(session({secret: config.session_secret}));
+app.use(session({
+	secret: config.session_secret,
+	resave: true,
+	saveUninitialized: true
+}));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
