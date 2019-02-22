@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="author" content="Harkeerat Kanwal">
+
+		<% include ../partials/header_imports %>
+	</head>
+
+	<body>
+		<% include ../partials/log_in %>
+		<% include ../partials/sign_up %>
+		<%- include("../partials/navbar", { active: "APIs", session: session }) %>
+
+		<div class="container">
+			<div class="container-fluid page-header">
+				<h2>Stockfish API</h2>
+			</div>
+			<div class="container-fluid">
+				<p class="larger-text">
+					Status: <span style="color:#32e54a;">Online</span>
+					<br>
+					API-Key Needed? <span style="color:#e23a2b;">No</span>
+					<br><br>
+					Request URL: <span id="request-target"></span>
+					<br>
+					Query Data: {<br>
+						<span style="margin-left:4em;">"fen": string,</span><br>
+						<span style="margin-left:4em;">"time": string/number in ms,</span><br>
+						<span style="margin-left:4em;">"skillLevel": string/number from 1 to 20</span><br>
+					}
+					<br>
+					Response: Best move in SAN (eg. a7a5)
+				</p>
+			</div>
+		</div>
+
+		<% include ../partials/footer %>
+
+    	<% include ../partials/end_imports %>
+	</body>
+</html>
+
+<script>
+$("#request-target").text(window.location + "/api");
+</script>

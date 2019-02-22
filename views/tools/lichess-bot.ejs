@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="author" content="Harkeerat Kanwal">
+
+		<% include ../partials/header_imports %>
+	</head>
+
+	<body>
+		<% include ../partials/log_in %>
+		<% include ../partials/sign_up %>
+		<%- include("../partials/navbar", { active: "Tools", session: session }) %>
+
+		<div class="container">
+			<div class="container-fluid page-header">
+				<h2>Lichess.org Chess Bot</h2>
+			</div>
+			<div class="container-fluid">
+				<p class="larger-text">
+					This information is taken from the readme of <a href="https://github.com/HKanwal/lichess-bot">this project's GitHub page.</a>
+				</p>
+				<%- readmeHtml %>
+			</div>
+		</div>
+
+		<% include ../partials/footer %>
+
+    	<% include ../partials/end_imports %>
+	</body>
+</html>
